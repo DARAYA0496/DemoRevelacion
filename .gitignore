@@ -1,0 +1,36 @@
+# Dependencias (NUNCA subirlas a Git)
+node_modules/
+.pnp
+.pnp.js
+
+# Variables de entorno y credenciales sensibles (Protege tu DATABASE_URL de NeonDB)
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.local
+
+# Salida de compilación (Vite / Vercel las genera automáticamente en la nube)
+dist/
+dist-ssr/
+build/
+*.tsbuildinfo
+
+# Logs y depuración
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Archivos del sistema y editores
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?

@@ -1,0 +1,75 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: 'Fredoka', system-ui, -apple-system, sans-serif;
+  --font-sans: 'Nunito', system-ui, -apple-system, sans-serif;
+
+  /* Paleta Pastel Azul & Rosa + Ositos */
+  --color-pastel-blue-light: #E8F4FE;
+  --color-pastel-blue: #BDE0FE;
+  --color-pastel-blue-strong: #72B6F6;
+  --color-pastel-blue-dark: #2B6CB0;
+
+  --color-pastel-pink-light: #FFF0F6;
+  --color-pastel-pink: #FFC8DD;
+  --color-pastel-pink-strong: #FF94B8;
+  --color-pastel-pink-dark: #97266D;
+
+  --color-bear-cream: #FFFDF9;
+  --color-bear-tan: #F5EBE1;
+  --color-bear-light: #D9B38C;
+  --color-bear-brown: #B08259;
+  --color-bear-dark: #5C4332;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-bear-cream);
+    color: var(--color-bear-dark);
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-display);
+  }
+}
+
+@keyframes floatSlow {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-10px) rotate(1.5deg);
+  }
+}
+
+@keyframes floatReverse {
+  0%, 100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  50% {
+    transform: translateY(8px) rotate(-1.5deg);
+  }
+}
+
+@keyframes pulseSoft {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.04);
+  }
+}
+
+.animate-float-slow {
+  animation: floatSlow 4.5s ease-in-out infinite;
+}
+
+.animate-float-reverse {
+  animation: floatReverse 5s ease-in-out infinite;
+}
+
+.animate-pulse-soft {
+  animation: pulseSoft 3s ease-in-out infinite;
+}
