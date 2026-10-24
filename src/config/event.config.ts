@@ -40,13 +40,13 @@ export const EVENT_CONFIG: EventConfig = {
     {
       id: "location",
       title: "Lugar del Evento",
-      subtitle: "Jardín Los Ositos",
-      description:
-        "Av. Las Flores 450, terraza techada con área verde y parqueo privado.",
+      subtitle: "Mi Casa, Condominio el Fresal",
+      description: "",
       iconName: "map-pin",
       variant: "pink",
       actionLabel: "Ver en Google Maps",
-      actionUrl: "https://maps.google.com/?q=Parque+Central",
+      actionUrl:
+        "https://www.google.com/maps/place/Condominio+El+Fresal/@9.932816,-84.0061567,17z/data=!3m1!4b1!4m6!3m5!1s0x8fa0e180c75240a1:0x58a94a38ea07e3ab!8m2!3d9.932816!4d-84.0012804!16s%2Fg%2F11kqd4ykjm?entry=ttu&g_ep=EgoyMDI2MTAyMC4wIKXMDSoASAFQAw%3D%3D",
     },
     {
       id: "gifts",
