@@ -17,18 +17,19 @@ export const TeamVoteSection: React.FC<TeamVoteSectionProps> = ({
 }) => {
   const [hasVoted, setHasVoted] = useState(false);
   const [votes, setVotes] = useState({
-    boy: EVENT_CONFIG.initialVotes.boy,
-    girl: EVENT_CONFIG.initialVotes.girl,
+    boy: Number(EVENT_CONFIG.initialVotes.boy) || 0,
+    girl: Number(EVENT_CONFIG.initialVotes.girl) || 0,
   });
 
   useEffect(() => {
     let isMounted = true;
     rsvpService.fetchLiveStats().then((stats) => {
-      if (isMounted && stats && (stats.totalBoyVotes > 0 || stats.totalGirlVotes > 0)) {
-        setVotes({
-          boy: stats.totalBoyVotes,
-          girl: stats.totalGirlVotes,
-        });
+      if (isMounted && stats) {
+        const boy = Number(stats.totalBoyVotes);
+        const girl = Number(stats.totalGirlVotes);
+        if (!isNaN(boy) && !isNaN(girl) && (boy > 0 || girl > 0)) {
+          setVotes({ boy, girl });
+        }
       }
     });
     return () => {
@@ -41,15 +42,17 @@ export const TeamVoteSection: React.FC<TeamVoteSectionProps> = ({
     if (!hasVoted) {
       setVotes((prev) => ({
         ...prev,
-        [team]: prev[team] + 1,
+        [team]: (Number(prev[team]) || 0) + 1,
       }));
       setHasVoted(true);
+
       const updated = await rsvpService.submitQuickVote(team);
-      if (updated && (updated.totalBoyVotes > 0 || updated.totalGirlVotes > 0)) {
-        setVotes({
-          boy: updated.totalBoyVotes,
-          girl: updated.totalGirlVotes,
-        });
+      if (updated) {
+        const boy = Number(updated.totalBoyVotes);
+        const girl = Number(updated.totalGirlVotes);
+        if (!isNaN(boy) && !isNaN(girl) && (boy > 0 || girl > 0)) {
+          setVotes({ boy, girl });
+        }
       }
     }
 
@@ -65,9 +68,12 @@ export const TeamVoteSection: React.FC<TeamVoteSectionProps> = ({
     }
   };
 
-  const totalVotes = Math.max(1, votes.boy + votes.girl);
-  const boyPercent = Math.round((votes.boy / totalVotes) * 100);
-  const girlPercent = 100 - boyPercent;
+  const boyVotes = Number(votes.boy) || 0;
+  const girlVotes = Number(votes.girl) || 0;
+  const totalVotes = boyVotes + girlVotes;
+
+  const boyPercent = totalVotes > 0 ? Math.round((boyVotes / totalVotes) * 100) : 50;
+  const girlPercent = totalVotes > 0 ? 100 - boyPercent : 50;
 
   return (
     <SectionContainer id="votacion" background="cream">
@@ -170,13 +176,13 @@ export const TeamVoteSection: React.FC<TeamVoteSectionProps> = ({
       <Card variant="neutral" className="p-5 sm:p-6">
         <div className="flex items-center justify-between text-sm font-display font-bold mb-2">
           <span className="text-[#2B6CB0] flex items-center gap-1.5">
-            🧸💙 Osito ({votes.boy} votos • {boyPercent}%)
+            🧸💙 Osito ({boyVotes} {boyVotes === 1 ? 'voto' : 'votos'} • {boyPercent}%)
           </span>
           <span className="text-[#5C4332] hidden sm:inline-flex items-center gap-1 text-xs">
             <Sparkles className="w-3.5 h-3.5 text-[#B08259]" /> Marcador en tiempo real
           </span>
           <span className="text-[#97266D] flex items-center gap-1.5">
-            ({girlPercent}% • {votes.girl} votos) Osita 💗🧸
+            ({girlPercent}% • {girlVotes} {girlVotes === 1 ? 'voto' : 'votos'}) Osita 💗🧸
           </span>
         </div>
 

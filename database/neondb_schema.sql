@@ -65,24 +65,24 @@ poll_stats AS (
     FROM quick_votes
 )
 SELECT
-    r.families_attending,
-    r.total_guests_confirmed,
-    r.families_declined,
-    (r.rsvp_boy_votes + p.quick_boy_votes) AS total_boy_votes,
-    (r.rsvp_girl_votes + p.quick_girl_votes) AS total_girl_votes,
+    r.families_attending::INT AS families_attending,
+    r.total_guests_confirmed::INT AS total_guests_confirmed,
+    r.families_declined::INT AS families_declined,
+    (r.rsvp_boy_votes + p.quick_boy_votes)::INT AS total_boy_votes,
+    (r.rsvp_girl_votes + p.quick_girl_votes)::INT AS total_girl_votes,
     CASE
         WHEN (r.rsvp_boy_votes + p.quick_boy_votes + r.rsvp_girl_votes + p.quick_girl_votes) = 0 THEN 50
         ELSE ROUND(
             ((r.rsvp_boy_votes + p.quick_boy_votes)::NUMERIC /
-            (r.rsvp_boy_votes + p.quick_boy_votes + r.rsvp_girl_votes + p.quick_girl_votes)::NUMERIC) * 100
-        )
+            NULLIF(r.rsvp_boy_votes + p.quick_boy_votes + r.rsvp_girl_votes + p.quick_girl_votes, 0)::NUMERIC) * 100
+        )::INT
     END AS boy_percentage,
     CASE
         WHEN (r.rsvp_boy_votes + p.quick_boy_votes + r.rsvp_girl_votes + p.quick_girl_votes) = 0 THEN 50
         ELSE ROUND(
             ((r.rsvp_girl_votes + p.quick_girl_votes)::NUMERIC /
-            (r.rsvp_boy_votes + p.quick_boy_votes + r.rsvp_girl_votes + p.quick_girl_votes)::NUMERIC) * 100
-        )
+            NULLIF(r.rsvp_boy_votes + p.quick_boy_votes + r.rsvp_girl_votes + p.quick_girl_votes, 0)::NUMERIC) * 100
+        )::INT
     END AS girl_percentage
 FROM rsvp_stats r
 CROSS JOIN poll_stats p;

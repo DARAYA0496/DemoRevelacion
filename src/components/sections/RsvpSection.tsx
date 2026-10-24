@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   Check,
   Heart,
@@ -8,10 +8,10 @@ import {
   Send,
   Users,
   Utensils,
-} from 'lucide-react';
-import { EVENT_CONFIG } from '../../config/event.config';
-import { useRsvpForm } from '../../hooks/useRsvpForm';
-import { TeamGender } from '../../types/invitation.types';
+} from "lucide-react";
+import { EVENT_CONFIG } from "../../config/event.config";
+import { useRsvpForm } from "../../hooks/useRsvpForm";
+import { TeamGender } from "../../types/invitation.types";
 import {
   Badge,
   BearMascot,
@@ -21,7 +21,7 @@ import {
   SectionContainer,
   SectionHeader,
   TextAreaField,
-} from '../ui';
+} from "../ui";
 
 export interface RsvpSectionProps {
   selectedTeam: TeamGender;
@@ -47,7 +47,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
   const [showGuestbook, setShowGuestbook] = useState(false);
 
   const handleTeamChange = (team: TeamGender) => {
-    updateField('teamVote', team);
+    updateField("teamVote", team);
     onSelectTeam(team);
   };
 
@@ -64,7 +64,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
       <div className="max-w-2xl mx-auto">
         {submittedEntry ? (
           <Card
-            variant={submittedEntry.teamVote === 'boy' ? 'blue' : 'pink'}
+            variant={submittedEntry.teamVote === "boy" ? "blue" : "pink"}
             className="text-center py-10"
           >
             <div className="flex justify-center mb-4">
@@ -76,7 +76,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
             </div>
 
             <Badge
-              variant={submittedEntry.teamVote === 'boy' ? 'blue' : 'pink'}
+              variant={submittedEntry.teamVote === "boy" ? "blue" : "pink"}
               icon={<Check className="w-4 h-4" />}
               className="mb-3"
             >
@@ -88,15 +88,15 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
             </h3>
 
             <p className="mt-2 text-[#7D614D] max-w-md mx-auto">
-              {submittedEntry.attending === 'yes'
+              {submittedEntry.attending === "yes"
                 ? `Hemos registrado tu confirmación para ${submittedEntry.guestsCount} ${
-                    submittedEntry.guestsCount === 1 ? 'persona' : 'personas'
+                    submittedEntry.guestsCount === 1 ? "persona" : "personas"
                   } apoyando al ${
-                    submittedEntry.teamVote === 'boy'
+                    submittedEntry.teamVote === "boy"
                       ? EVENT_CONFIG.boyTeamName
                       : EVENT_CONFIG.girlTeamName
                   }.`
-                : 'Gracias por avisarnos y por tus hermosos deseos para nuestro bebé.'}
+                : "Gracias por avisarnos y por tus hermosos deseos para nuestro bebé."}
             </p>
 
             <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -137,7 +137,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
                   label="Nombre Completo o Familia *"
                   placeholder="Ej. Familia Araya / Ana Gómez"
                   value={values.guestName}
-                  onChange={(e) => updateField('guestName', e.target.value)}
+                  onChange={(e) => updateField("guestName", e.target.value)}
                   error={errors.guestName}
                   icon={<Users className="w-4 h-4" />}
                 />
@@ -147,7 +147,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
                   type="tel"
                   placeholder="Ej. 8888-8888"
                   value={values.phone}
-                  onChange={(e) => updateField('phone', e.target.value)}
+                  onChange={(e) => updateField("phone", e.target.value)}
                   icon={<Phone className="w-4 h-4" />}
                 />
               </div>
@@ -160,11 +160,11 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   <button
                     type="button"
-                    onClick={() => updateField('attending', 'yes')}
+                    onClick={() => updateField("attending", "yes")}
                     className={`flex items-center justify-center gap-2 rounded-2xl p-3.5 font-display font-semibold border-2 transition-all cursor-pointer ${
-                      values.attending === 'yes'
-                        ? 'bg-[#E8F4FE] border-[#72B6F6] text-[#2B6CB0] shadow-xs'
-                        : 'bg-white border-[#E6D3C1] text-[#7D614D] hover:bg-[#FFFDF9]'
+                      values.attending === "yes"
+                        ? "bg-[#E8F4FE] border-[#72B6F6] text-[#2B6CB0] shadow-xs"
+                        : "bg-white border-[#E6D3C1] text-[#7D614D] hover:bg-[#FFFDF9]"
                     }`}
                   >
                     <span>🎉 ¡Sí, ahí estaré!</span>
@@ -172,11 +172,11 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
 
                   <button
                     type="button"
-                    onClick={() => updateField('attending', 'no')}
+                    onClick={() => updateField("attending", "no")}
                     className={`flex items-center justify-center gap-2 rounded-2xl p-3.5 font-display font-semibold border-2 transition-all cursor-pointer ${
-                      values.attending === 'no'
-                        ? 'bg-[#FFF0F6] border-[#FF94B8] text-[#97266D] shadow-xs'
-                        : 'bg-white border-[#E6D3C1] text-[#7D614D] hover:bg-[#FFFDF9]'
+                      values.attending === "no"
+                        ? "bg-[#FFF0F6] border-[#FF94B8] text-[#97266D] shadow-xs"
+                        : "bg-white border-[#E6D3C1] text-[#7D614D] hover:bg-[#FFFDF9]"
                     }`}
                   >
                     <span>💌 No podré, los acompaño de corazón</span>
@@ -185,7 +185,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
               </div>
 
               {/* Cantidad de personas y notas (solo si asiste) */}
-              {values.attending === 'yes' && (
+              {values.attending === "yes" && (
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
                     <label
@@ -198,13 +198,13 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
                       id="guests-count"
                       value={values.guestsCount}
                       onChange={(e) =>
-                        updateField('guestsCount', Number(e.target.value))
+                        updateField("guestsCount", Number(e.target.value))
                       }
                       className="w-full rounded-2xl bg-white border-2 border-[#E6D3C1] focus:border-[#72B6F6] px-4 py-3 text-[#5C4332] font-semibold focus:outline-none"
                     >
                       {[1, 2, 3, 4, 5, 6].map((num) => (
                         <option key={num} value={num}>
-                          {num} {num === 1 ? 'Persona' : 'Personas'}
+                          {num} {num === 1 ? "Persona" : "Personas"}
                         </option>
                       ))}
                     </select>
@@ -220,7 +220,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
                     placeholder="Ej. 1 silla de bebé, vegetariano..."
                     value={values.dietaryOrNotes}
                     onChange={(e) =>
-                      updateField('dietaryOrNotes', e.target.value)
+                      updateField("dietaryOrNotes", e.target.value)
                     }
                     icon={<Utensils className="w-4 h-4" />}
                   />
@@ -230,16 +230,16 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
               {/* Selector de Equipo: Azul o Rosa */}
               <div>
                 <label className="block text-sm font-display font-semibold text-[#5C4332] mb-2">
-                  Tu Predicción: ¿De qué equipo vienes vestido/a? *
+                  Tu Predicción: *
                 </label>
                 <div className="grid grid-cols-2 gap-3">
                   <button
                     type="button"
-                    onClick={() => handleTeamChange('boy')}
+                    onClick={() => handleTeamChange("boy")}
                     className={`flex flex-col items-center justify-center rounded-2xl p-4 border-2 transition-all cursor-pointer ${
-                      values.teamVote === 'boy'
-                        ? 'bg-[#BDE0FE]/75 border-[#72B6F6] text-[#2B6CB0] ring-2 ring-[#72B6F6]'
-                        : 'bg-white border-[#E6D3C1] text-[#7D614D] hover:bg-[#E8F4FE]/40'
+                      values.teamVote === "boy"
+                        ? "bg-[#BDE0FE]/75 border-[#72B6F6] text-[#2B6CB0] ring-2 ring-[#72B6F6]"
+                        : "bg-white border-[#E6D3C1] text-[#7D614D] hover:bg-[#E8F4FE]/40"
                     }`}
                   >
                     <span className="text-2xl mb-1">🧸💙</span>
@@ -250,11 +250,11 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
 
                   <button
                     type="button"
-                    onClick={() => handleTeamChange('girl')}
+                    onClick={() => handleTeamChange("girl")}
                     className={`flex flex-col items-center justify-center rounded-2xl p-4 border-2 transition-all cursor-pointer ${
-                      values.teamVote === 'girl'
-                        ? 'bg-[#FFC8DD]/75 border-[#FF94B8] text-[#97266D] ring-2 ring-[#FF94B8]'
-                        : 'bg-white border-[#E6D3C1] text-[#7D614D] hover:bg-[#FFF0F6]/40'
+                      values.teamVote === "girl"
+                        ? "bg-[#FFC8DD]/75 border-[#FF94B8] text-[#97266D] ring-2 ring-[#FF94B8]"
+                        : "bg-white border-[#E6D3C1] text-[#7D614D] hover:bg-[#FFF0F6]/40"
                     }`}
                   >
                     <span className="text-2xl mb-1">🧸💗</span>
@@ -271,22 +271,24 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
                 rows={3}
                 placeholder="Escribe tus buenos deseos para nuestro pequeño osito o osita..."
                 value={values.messageForBaby}
-                onChange={(e) => updateField('messageForBaby', e.target.value)}
+                onChange={(e) => updateField("messageForBaby", e.target.value)}
               />
 
               {/* Botón de envío */}
               <Button
                 type="submit"
-                variant={values.teamVote === 'boy' ? 'blue' : 'pink'}
+                variant={values.teamVote === "boy" ? "blue" : "pink"}
                 size="lg"
                 fullWidth
                 disabled={isSubmitting}
                 leftIcon={<Send className="w-5 h-5" />}
               >
                 {isSubmitting
-                  ? 'Guardando confirmación...'
+                  ? "Guardando confirmación..."
                   : `Confirmar Asistencia (${
-                      values.teamVote === 'boy' ? 'Team Osito 💙' : 'Team Osita 💗'
+                      values.teamVote === "boy"
+                        ? "Team Osito 💙"
+                        : "Team Osita 💗"
                     })`}
               </Button>
             </form>
@@ -301,10 +303,12 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
               variant="outline"
               size="sm"
               onClick={() => setShowGuestbook((prev) => !prev)}
-              leftIcon={<Heart className="w-4 h-4 text-[#FF94B8] fill-current" />}
+              leftIcon={
+                <Heart className="w-4 h-4 text-[#FF94B8] fill-current" />
+              }
             >
               {showGuestbook
-                ? 'Ocultar confirmaciones recientes'
+                ? "Ocultar confirmaciones recientes"
                 : `Ver confirmaciones y deseos (${savedList.length})`}
             </Button>
 
@@ -313,7 +317,7 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
                 {savedList.map((entry) => (
                   <Card
                     key={entry.id}
-                    variant={entry.teamVote === 'boy' ? 'blue' : 'pink'}
+                    variant={entry.teamVote === "boy" ? "blue" : "pink"}
                     className="p-4 sm:p-5"
                   >
                     <div className="flex flex-wrap items-center justify-between gap-2">
@@ -322,14 +326,16 @@ export const RsvpSection: React.FC<RsvpSectionProps> = ({
                       </span>
                       <div className="flex items-center gap-2">
                         <Badge
-                          variant={entry.teamVote === 'boy' ? 'blue' : 'pink'}
+                          variant={entry.teamVote === "boy" ? "blue" : "pink"}
                         >
-                          {entry.teamVote === 'boy' ? '🧸💙 Osito' : '🧸💗 Osita'}
+                          {entry.teamVote === "boy"
+                            ? "🧸💙 Osito"
+                            : "🧸💗 Osita"}
                         </Badge>
                         <Badge variant="neutral">
-                          {entry.attending === 'yes'
+                          {entry.attending === "yes"
                             ? `Asiste (${entry.guestsCount})`
-                            : 'No asiste'}
+                            : "No asiste"}
                         </Badge>
                       </div>
                     </div>

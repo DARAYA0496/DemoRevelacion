@@ -22,9 +22,26 @@ export default async function handler(req: any, res: any) {
 
   const sql = neon(databaseUrl);
 
+  const sanitizeStats = (stats: any) => {
+    const boyVotes = Number(stats?.totalBoyVotes || 0);
+    const girlVotes = Number(stats?.totalGirlVotes || 0);
+    const total = boyVotes + girlVotes;
+    const boyPercent = total > 0 ? Math.round((boyVotes / total) * 100) : 50;
+    const girlPercent = total > 0 ? 100 - boyPercent : 50;
+
+    return {
+      familiesAttending: Number(stats?.familiesAttending || 0),
+      totalGuestsConfirmed: Number(stats?.totalGuestsConfirmed || 0),
+      familiesDeclined: Number(stats?.familiesDeclined || 0),
+      totalBoyVotes: boyVotes,
+      totalGirlVotes: girlVotes,
+      boyPercentage: boyPercent,
+      girlPercentage: girlPercent,
+    };
+  };
+
   try {
     if (req.method === 'GET') {
-      // Obtener el conteo acumulado y estadísticas
       const [stats] = await sql`
         SELECT
           families_attending AS "familiesAttending",
@@ -36,14 +53,7 @@ export default async function handler(req: any, res: any) {
           girl_percentage AS "girlPercentage"
         FROM v_event_dashboard;
       `;
-      return res.status(200).json(
-        stats || {
-          totalBoyVotes: 0,
-          totalGirlVotes: 0,
-          boyPercentage: 50,
-          girlPercentage: 50,
-        }
-      );
+      return res.status(200).json(sanitizeStats(stats));
     }
 
     if (req.method === 'POST') {
@@ -59,7 +69,6 @@ export default async function handler(req: any, res: any) {
         VALUES (${team}, ${fingerprint});
       `;
 
-      // Retornar las estadísticas actualizadas tras el voto
       const [updatedStats] = await sql`
         SELECT
           total_boy_votes AS "totalBoyVotes",
@@ -69,7 +78,7 @@ export default async function handler(req: any, res: any) {
         FROM v_event_dashboard;
       `;
 
-      return res.status(200).json(updatedStats);
+      return res.status(200).json(sanitizeStats(updatedStats));
     }
 
     return res.status(405).json({ error: 'Método no permitido' });
