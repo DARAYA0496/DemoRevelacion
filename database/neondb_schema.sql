@@ -4,7 +4,7 @@
 -- Compatible 100% con el SQL Editor de Neon (console.neon.tech)
 -- ============================================================================
 
--- 1. Extensión para generación de UUIDs (ya viene habilitada en Postgres 13+ / NeonDB)
+-- 1. Extensión para generación de UUIDs (habilitada en Postgres 13+ / NeonDB)
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
 
 -- 2. Tipos ENUM personalizados para garantizar integridad de datos
@@ -41,13 +41,13 @@ CREATE INDEX IF NOT EXISTS idx_rsvp_attending ON rsvp_confirmations (attending);
 CREATE TABLE IF NOT EXISTS quick_votes (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     team team_gender NOT NULL,
-    voter_fingerprint VARCHAR(64) DEFAULT NULL, -- Opcional para evitar spam desde el mismo navegador
+    voter_fingerprint VARCHAR(64) UNIQUE DEFAULT NULL, -- Garantiza 1 voto por dispositivo
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX IF NOT EXISTS idx_quick_votes_team ON quick_votes (team);
 
--- 5. Vista de Estadísticas en Tiempo Real (Combina votos rápidos + votos del formulario RSVP)
+-- 5. Vista de Estadísticas en Tiempo Real (Sin duplicados: 1 persona = 1 voto)
 CREATE OR REPLACE VIEW v_event_dashboard AS
 WITH rsvp_stats AS (
     SELECT
@@ -86,9 +86,3 @@ SELECT
     END AS girl_percentage
 FROM rsvp_stats r
 CROSS JOIN poll_stats p;
-
--- 6. Semilla inicial opcional (para que el marcador de votos arranque con movimiento)
-INSERT INTO quick_votes (team)
-VALUES
-    ('boy'), ('girl'), ('boy'), ('girl')
-ON CONFLICT DO NOTHING;

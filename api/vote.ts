@@ -64,10 +64,29 @@ export default async function handler(req: any, res: any) {
         return res.status(400).json({ error: 'Equipo inválido. Debe ser "boy" o "girl".' });
       }
 
-      await sql`
-        INSERT INTO quick_votes (team, voter_fingerprint)
-        VALUES (${team}, ${fingerprint});
-      `;
+      if (fingerprint) {
+        // Si el usuario ya votó con este dispositivo, actualizamos su voto para no duplicar
+        const existing = await sql`
+          SELECT id FROM quick_votes WHERE voter_fingerprint = ${fingerprint} LIMIT 1;
+        `;
+        if (existing.length > 0) {
+          await sql`
+            UPDATE quick_votes
+            SET team = ${team}, created_at = CURRENT_TIMESTAMP
+            WHERE voter_fingerprint = ${fingerprint};
+          `;
+        } else {
+          await sql`
+            INSERT INTO quick_votes (team, voter_fingerprint)
+            VALUES (${team}, ${fingerprint});
+          `;
+        }
+      } else {
+        await sql`
+          INSERT INTO quick_votes (team, voter_fingerprint)
+          VALUES (${team}, NULL);
+        `;
+      }
 
       const [updatedStats] = await sql`
         SELECT

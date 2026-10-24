@@ -1,7 +1,6 @@
 import { neon } from '@neondatabase/serverless';
 
 export default async function handler(req: any, res: any) {
-  // Configuración de encabezados CORS y JSON
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,POST');
@@ -25,7 +24,6 @@ export default async function handler(req: any, res: any) {
 
   try {
     if (req.method === 'GET') {
-      // Obtener las confirmaciones para el muro de deseos
       const rows = await sql`
         SELECT
           id,
@@ -54,6 +52,7 @@ export default async function handler(req: any, res: any) {
         teamVote,
         dietaryOrNotes = '',
         messageForBaby = '',
+        fingerprint = null,
       } = body;
 
       if (!guestName || !teamVote) {
@@ -89,6 +88,14 @@ export default async function handler(req: any, res: any) {
           message_for_baby AS "messageForBaby",
           created_at AS "createdAt";
       `;
+
+      // Si el usuario tenía un voto preliminar en quick_votes, lo eliminamos
+      // para evitar duplicar el voto (1 en la encuesta + 1 en el formulario)
+      if (fingerprint) {
+        await sql`
+          DELETE FROM quick_votes WHERE voter_fingerprint = ${fingerprint};
+        `;
+      }
 
       return res.status(201).json(inserted);
     }

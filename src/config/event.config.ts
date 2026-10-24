@@ -18,7 +18,7 @@ export const EVENT_CONFIG: EventConfig = {
   venueName: "Jardín Los Ositos & Salón Cristal",
   venueAddress: "Av. Las Flores 450, frente al Parque Central",
   mapUrl: "https://maps.google.com/?q=Parque+Central",
-  whatsappNumber: "50688888888",
+  whatsappNumber: "50684565005",
   boyTeamName: "#TeamOsito 💙",
   girlTeamName: "#TeamOsita 💗",
   boyOptionLabel: "Príncipe Osito (Azul)",

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { CheckCircle2, Sparkles } from 'lucide-react';
 import { EVENT_CONFIG } from '../../config/event.config';
 import { TeamGender } from '../../types/invitation.types';
@@ -21,21 +21,31 @@ export const TeamVoteSection: React.FC<TeamVoteSectionProps> = ({
     girl: Number(EVENT_CONFIG.initialVotes.girl) || 0,
   });
 
-  useEffect(() => {
-    let isMounted = true;
+  const loadLiveStats = useCallback(() => {
     rsvpService.fetchLiveStats().then((stats) => {
-      if (isMounted && stats) {
+      if (stats) {
         const boy = Number(stats.totalBoyVotes);
         const girl = Number(stats.totalGirlVotes);
-        if (!isNaN(boy) && !isNaN(girl) && (boy > 0 || girl > 0)) {
+        if (!isNaN(boy) && !isNaN(girl)) {
           setVotes({ boy, girl });
         }
       }
     });
-    return () => {
-      isMounted = false;
-    };
   }, []);
+
+  useEffect(() => {
+    loadLiveStats();
+
+    // Escuchar cuando se confirme una asistencia para refrescar los votos al instante
+    const handleRsvpUpdated = () => {
+      loadLiveStats();
+    };
+
+    window.addEventListener('rsvp-updated', handleRsvpUpdated);
+    return () => {
+      window.removeEventListener('rsvp-updated', handleRsvpUpdated);
+    };
+  }, [loadLiveStats]);
 
   const handleVote = async (team: TeamGender) => {
     onSelectTeam(team);
@@ -50,7 +60,7 @@ export const TeamVoteSection: React.FC<TeamVoteSectionProps> = ({
       if (updated) {
         const boy = Number(updated.totalBoyVotes);
         const girl = Number(updated.totalGirlVotes);
-        if (!isNaN(boy) && !isNaN(girl) && (boy > 0 || girl > 0)) {
+        if (!isNaN(boy) && !isNaN(girl)) {
           setVotes({ boy, girl });
         }
       }
