@@ -24,8 +24,8 @@ export const EVENT_CONFIG: EventConfig = {
   boyOptionLabel: "Príncipe Osito (Azul)",
   girlOptionLabel: "Princesa Osita (Rosa)",
   initialVotes: {
-    boy: 18,
-    girl: 21,
+    boy: 0,
+    girl: 0,
   },
   details: [
     {
